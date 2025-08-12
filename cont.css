@@ -1,0 +1,81 @@
+body{
+    background-color: #f4f4f4;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+}
+.top-bar {
+            display: flex;
+            justify-content: flex-end;
+            background-color:purple;
+            padding: 10px 20px;
+        }
+        .home-button {
+            background-color: #ffffff;
+            color: purple;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+}
+
+        .home-button:hover {
+            background-color:purple;
+            color: white;
+        }
+form{
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 500px;
+    margin: auto;
+}
+input[type="text"],
+input[type="email"], 
+input[type="message"],  
+input[type="submit"],
+textarea{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+button[type="submit"]{
+    background-color:purple;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+button[type="submit"]:hover{
+    background-color: orange;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    justify-content: center;
+    background-color: purple;
+    color: #fff;
+
+}
+ul li a{
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 16px;
+    display: block;
+    justify-content: center;
+    justify-items: center;
+}
+li{ ]a
+    margin-right: 20px;
+    text-align: center;
+    display: inline-block;
+}
