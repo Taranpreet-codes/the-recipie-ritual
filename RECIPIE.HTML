@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Index</title>
+  <style>
+   body {
+        
+            margin: 0;
+            background: #faf9f6;
+            color: #333;
+        }
+        header {
+            background:purple;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 24px 0;
+            text-align: center;
+        }
+        header h1 {
+            font-family: cursive,'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            color: white;
+            font-weight: 700;
+        }
+        nav {
+            margin-top: 16px;
+            background-color: purple;
+            padding: 20px 0;
+        }
+        nav a {
+            text-decoration: none;
+            color: whitesmoke;
+            font-weight: 900;
+            margin: 0 16px;
+            font-family: 'Montserrat', sans-serif;
+            transition: color 0.2s;
+        
+        }
+        nav a:hover {
+            color: #ffb347;
+        }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .filters input, .filters select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #fbcfe8, #fef3c7);
+      color: #333;
+    }
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #eee;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease;
+    }
+    .card:hover { box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .card-img {
+      height: 160px;
+      background: linear-gradient(135deg, #fbcfe8, #fef3c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    .card-body {
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-body h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1.3;
+    }
+    .tags {
+      margin-top: auto;
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+    }
+    .tag {
+      background: #f3f4f6;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+    }
+    .load-more {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: #111;
+      color: white;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .load-more:hover { background: #333; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>yum and tasty recipes</h1>
+  <div class="filters">
+    <input type="text" id="search" placeholder="Search recipes...">
+    <select id="category">
+      <option value="">All Categories</option>
+      <option>Dinner</option>
+      <option>Lunch</option>
+      <option>Breakfast</option>
+      <option>Dessert</option>
+    </select>
+    <select id="sort">
+      <option value="rating">Top Rated</option>
+      <option value="new">Newest</option>
+      <option value="time">Shortest Time</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <button class="load-more" id="loadMore">Load More</button>
+</main>
+
+<script>
+  // Mock data generator
+  const recipes = [];
+  const categories = ["Dinner","Lunch","Breakfast","Dessert"];
+  for(let i=1;i<=100;i++){
+    recipes.push({
+      id: i,
+      title: "Recipe " + i,
+      category: categories[i % categories.length],
+      time: 10 + (i % 60),
+      rating: (Math.random()*2+3).toFixed(1) // 3.0–5.0
+    });
+  }
+
+  let visible = 12;
+  const grid = document.getElementById("grid");
+  const loadBtn = document.getElementById("loadMore");
+  const searchInput = document.getElementById("search");
+  const categorySelect = document.getElementById("category");
+  const sortSelect = document.getElementById("sort");
+
+  function render() {
+    grid.innerHTML = "";
+    let list = [...recipes];
+
+    // filters
+    const q = searchInput.value.toLowerCase();
+    if(q) list = list.filter(r=>r.title.toLowerCase().includes(q));
+    if(categorySelect.value) list = list.filter(r=>r.category===categorySelect.value);
+
+    // sort
+    if(sortSelect.value==="time") list.sort((a,b)=>a.time-b.time);
+    else if(sortSelect.value==="new") list.sort((a,b)=>b.id-a.id);
+    else list.sort((a,b)=>b.rating-a.rating);
+
+    list.slice(0,visible).forEach(r=>{
+      const card = document.createElement("div");
+      card.className="card";
+      card.innerHTML = `
+        <div class="card-img">${r.title}</div>
+        <div class="card-body">
+          <h3>${r.title}</h3>
+          <small>⭐ ${r.rating} &nbsp; ⏱ ${r.time} mins</small>
+          <div class="tags"><span class="tag">${r.category}</span></div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    loadBtn.style.display = list.length > visible ? "block" : "none";
+  }
+
+  loadBtn.addEventListener("click", ()=>{ visible+=12; render(); });
+  searchInput.addEventListener("input", render);
+  categorySelect.addEventListener("change", render);
+  sortSelect.addEventListener("change", render);
+
+  render();
+</script>
+
+</body>
+</html>
